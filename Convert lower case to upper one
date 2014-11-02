@@ -1,0 +1,31 @@
+TITLE Program for Case Conversion
+PAGE 60,80
+.MODEL SMALL
+.STACK 100H
+
+.DATA
+MSG1 DB "Enter a lower case letter:$"
+MSG2 DB 0Dh, 0Ah, 'In upper case it is: '
+CHAR DB ?, '$'
+
+.CODE
+MAIN PROC     ; initialize DS
+MOV AX, @DATA ; get data segment
+MOV DS, AX    ; initialize DS
+              ; print user prompt
+LEA DX, MSG1
+MOV AH, 9
+INT 21H       ; display MSG1
+              ; input a character and convert to upper case
+MOV AH, 1     ; read a character
+INT 21H
+SUB AL, 20H   ; convert to upper case
+MOV CHAR, AL  ; and store it
+              ; display on the next line
+LEA DX, MSG2  ; display MSG2
+MOV AH, 9     ; and upper case
+INT 21H       ; DOS exit
+MOV AH, 4CH
+INT 21H       ; return to DOS
+MAIN ENDP
+END MAIN
